@@ -66,7 +66,6 @@ int main()
 	{
 		fscanf(fp, "%d|", &v_[maxv_++]);
 	}
-	//maxv_--;
 	for (int i = 0; i < points.size(); i++)		//将读入数据赋值给邻接矩阵
 	{
 		if (points[i].cost < matrix[points[i].source][points[i].destination])
@@ -80,9 +79,8 @@ int main()
 
 	iteration();
 	out();
-	cout << "点阵为：" << endl;
+	cout<<"点阵为："<<endl;
 	outpoint();
-
 	fenzhi();
 
 	yxdl tmp;
@@ -95,7 +93,6 @@ int main()
 	cout << tmp.path[tmp.m - 1] << "|";
 	line(tmp.path[tmp.m - 1], destination);
 	cout << destination;
-	system("pause");
 
 
 }
@@ -130,26 +127,34 @@ void fenzhi()
 	while (1)
 	{
 		sort(yx.begin(), yx.end(), compare);
-		
+		for(int i=yx.size()-5;i<yx.size();i++)
+	    cout<<yx[i].point<<" ";
+	    cout<<endl;
+	    for(int i=yx.size()-5;i<yx.size();i++)
+	    cout<<yx[i].cc<<" ";
+	    cout<<endl;
+	    for(int i=yx.size()-5;i<yx.size();i++)
+	    cout<<yx[i].lcost<<" ";
+	    cout<<endl;
 
-		//system("pause");
+	    //system("pause");
 		tmp = yx.back();
-		if (yx.size() == 0)
-		{
-			cout << "没有路径" << endl;
+		if(yx.size()==0)
+        {
+            cout<<"没有路径"<<endl;
+            break;
+        }
+		if (tmp.m == maxv_+1)
 			break;
-		}
-		if (tmp.m == maxv_ + 1)
-			break;
-		yx.pop_back();
+		yx.erase(yx.end()-1);
 		for (int i = 0; i < maxv_; i++)
 		{
-			if (matrix[tmp.point][v_[i]] < 99999 && checkexist(tmp, v_[i]))
+			if (matrix[tmp.point][v_[i]] <99999 && checkexist(tmp, v_[i]))
 			{
 				yxdl tmpp;
 				tmpp.point = v_[i];
 				tmpp.cc = tmp.cc + matrix[tmp.point][v_[i]];
-				tmpp.lcost = lowcost(tmp);
+				tmpp.lcost = lowcost(tmp) ;
 				for (int j = 0; j < tmp.m; j++)
 					tmpp.path[j] = tmp.path[j];
 				tmpp.path[tmp.m] = v_[i];
@@ -171,16 +176,15 @@ int lowcost(yxdl a)
 	int lcost = 0;
 	int tmpcost;
 	for (int i = 0; i < maxv_; i++)
-	{
-		if (checkexist(a, v_[i])){
+	{   if(checkexist( a,v_[i])){
 
-			tmpcost = 99999;
-			for (int j = 0; j < maxv_; j++)
-			{
-				if (matrix[v_[i]][v_[j]] < tmpcost&&i != j)
-					tmpcost = matrix[v_[i]][v_[j]];
-			}
-			lcost = lcost + tmpcost;
+		tmpcost = 99999;
+		for (int j = 0; j < maxv_; j++)
+		{
+			if (matrix[v_[i]][v_[j]] < tmpcost&&i != j)
+				tmpcost = matrix[v_[i]][v_[j]];
+		}
+		lcost = lcost + tmpcost;
 		}
 	}
 	return lcost;
